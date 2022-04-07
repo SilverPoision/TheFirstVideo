@@ -4,8 +4,8 @@ const { catchAsync, AppError } = require("../Controller/Misc/errorHandler");
 const { tokenVerify, accessVerify } = require("../Utils/oauth_utils");
 
 module.exports = catchAsync(async (req, res, next) => {
-  const token = req.cookies["session"];
-  const access_token = req.cookies["access_token"];
+  const token = req.body.session;
+  const access_token = req.body.access_token;
 
   if (!token) {
     return next(new AppError("No token Provided", 400));

@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.26.1",
+    "google-auth-library": "^7.14.1",
+    "js-cookie": "^3.0.1",
     "next": "12.1.4",
     "react": "18.0.0",
     "react-dom": "18.0.0"

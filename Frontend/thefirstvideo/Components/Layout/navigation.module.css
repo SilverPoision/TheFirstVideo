@@ -1,0 +1,43 @@
+.header {
+  width: 100%;
+  height: 4rem;
+  background-color: #1A1A1A;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10%;
+}
+
+.header ul {
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  margin: 0;
+  padding: 0;
+}
+
+.header li {
+  margin: 0 1rem;
+}
+
+.header a {
+  color: hsl(265, 19%, 88%);
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+}
+
+.header a:hover,
+.header a:active,
+.header a.active {
+  color: hsl(265, 7%, 70%);
+}
+
+@media (min-width: 768px) {
+  .header ul {
+    gap: 0.5rem;
+  }
+
+  .header a {
+    font-size: 1.25rem;
+  }
+}

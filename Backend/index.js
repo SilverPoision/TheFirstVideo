@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const mongo = require("mongoose");
+const cors = require("cors");
 var cookieParser = require("cookie-parser");
 dotenv.config();
 
@@ -21,9 +22,14 @@ mongo.connect(
   }
 );
 
+var corsOptions = {
+  origin: "http://localhost:3000",
+};
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("tiny"));
+app.use(cors(corsOptions));
 
 app.use(routes);
 app.use((_, res) => {
