@@ -46,3 +46,17 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
     })
     .redirect("http://localhost:3000/");
 });
+
+exports.logout = catchAsync(async (req, res, next) => {
+  const session = req.headers["authorization"];
+  let user = req.user;
+  filtered = [];
+  user.sessToken.map((el) => {
+    if (el != session) {
+      filtered.push(el);
+    }
+  });
+  user.sessToken = filtered;
+  user.save();
+  res.status(200).send({ success: true, error: false, message: "Logout done" });
+});

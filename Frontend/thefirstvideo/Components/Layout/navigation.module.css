@@ -24,6 +24,7 @@
   color: hsl(265, 19%, 88%);
   font-size: 1rem;
   letter-spacing: 0.1rem;
+  cursor: pointer;
 }
 
 .header a:hover,

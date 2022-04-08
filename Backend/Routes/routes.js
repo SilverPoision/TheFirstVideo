@@ -3,16 +3,20 @@ const router = express.Router();
 
 const authController = require("../Middleware/auth-controller");
 
-const { googleOauthHandler } = require("../Controller/auth-req");
+const { googleOauthHandler, logout } = require("../Controller/auth-req");
 
 router.get("/api/sessions/oauth/google", (req, res, next) =>
   googleOauthHandler(req, res, next)
 );
 
-router.post("/authenticate", authController, (req, res, next) => {
+router.get("/authenticate", authController, (req, res, next) => {
   res.json({
     success: true,
-    user: req.user.name,
+    user: {
+      email: req.user.email,
+      name: req.user.name,
+      url: req.user.photo_url,
+    },
   });
 });
 
@@ -22,5 +26,7 @@ router.get("/dashboard", authController, (req, res, next) => {
     name: req.user.name,
   });
 });
+
+router.get("/logout", authController, logout);
 
 module.exports = router;

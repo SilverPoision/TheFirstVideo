@@ -1,8 +1,23 @@
 import { useContext, createContext, useState } from "react";
 import Cookies from "js-cookie";
 
+import { removeCookieAndLocalstorage } from "../utils/regular_helpers";
+
+let token, session;
+if (typeof window !== "undefined") {
+  session = Cookies.get("session");
+  token = Cookies.get("access_token");
+  if (session && token) {
+    localStorage.setItem("session", session);
+    localStorage.setItem("access_token", token);
+  }
+  session = localStorage.getItem("session");
+  token = localStorage.getItem("access_token");
+}
+
 const authContext = createContext();
 const authUpdateContext = createContext();
+const signOutContext = createContext();
 
 export function useAuth() {
   return useContext(authContext);
@@ -10,28 +25,42 @@ export function useAuth() {
 export function useAuthUpdate() {
   return useContext(authUpdateContext);
 }
+export function useSignOut() {
+  return useContext(signOutContext);
+}
 
 function AuthProvider({ children }) {
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState({ auth: false });
 
-  function verifyAuth(token, session) {
+  function verifyAuth() {
     fetch("http://localhost:1337/authenticate", {
-      method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: session,
+        "Access-Token": token,
       },
-      body: JSON.stringify({
-        access_token: token,
-        session: session,
-      }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setAuth(true);
+          setAuth({ ...auth, auth: true, name: data.user.name });
         } else {
-          Cookies.remove("session");
-          Cookies.remove("access_token");
+          removeCookieAndLocalstorage(["session", "access_token"]);
+        }
+      });
+  }
+
+  function signout() {
+    fetch("http://localhost:1337/logout", {
+      headers: {
+        Authorization: session,
+        "Access-Token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setAuth({ auth: false });
+          removeCookieAndLocalstorage(["session", "access_token"]);
         }
       });
   }
@@ -41,7 +70,9 @@ function AuthProvider({ children }) {
       <authUpdateContext.Provider
         value={(token, session) => verifyAuth(token, session)}
       >
-        {children}
+        <signOutContext.Provider value={signout}>
+          {children}
+        </signOutContext.Provider>
       </authUpdateContext.Provider>
     </authContext.Provider>
   );

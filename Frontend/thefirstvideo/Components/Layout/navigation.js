@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import styles from "./navigation.module.css";
+import { useAuth, useSignOut } from "../../contexts/auth";
 
-const Navigation = () => {
-  return (
-    <header className={styles.header}>
-      <Link href="/">
-        <a>TheFirstVideo</a>
-      </Link>
+export default function Navigation() {
+  const auth = useAuth();
+  const signout = useSignOut();
+  let nav = null;
+  if (auth.auth) {
+    nav = (
       <nav>
         <ul>
           <li>
@@ -19,10 +20,19 @@ const Navigation = () => {
           <li>
             <Link href="/manage-priority">Manage Priority</Link>
           </li>
+          <li>
+            <a onClick={signout}>Logout</a>
+          </li>
         </ul>
       </nav>
+    );
+  }
+  return (
+    <header className={styles.header}>
+      <Link href="/">
+        <a>TheFirstVideo</a>
+      </Link>
+      {nav}
     </header>
   );
-};
-
-export default Navigation;
+}
