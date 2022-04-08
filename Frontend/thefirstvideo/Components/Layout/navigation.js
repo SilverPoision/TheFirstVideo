@@ -12,7 +12,7 @@ export default function Navigation() {
       <nav>
         <ul>
           <li>
-            <Link href="/subscriptions">Subscriptions</Link>
+            <Link href="/subscription">Subscriptions</Link>
           </li>
           <li>
             <Link href="/new-videos">New Videos</Link>

@@ -61,15 +61,14 @@ function AuthProvider({ children }) {
         if (data.success) {
           setAuth({ auth: false });
           removeCookieAndLocalstorage(["session", "access_token"]);
+          window.location.href = "http://localhost:3000/";
         }
       });
   }
 
   return (
     <authContext.Provider value={auth}>
-      <authUpdateContext.Provider
-        value={(token, session) => verifyAuth(token, session)}
-      >
+      <authUpdateContext.Provider value={verifyAuth}>
         <signOutContext.Provider value={signout}>
           {children}
         </signOutContext.Provider>
