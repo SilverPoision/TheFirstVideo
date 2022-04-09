@@ -37,11 +37,11 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   user.save();
   return res
     .cookie("session", token, {
-      maxAge: 900000,
+      maxAge: 3600000,
       httpOnly: false,
     })
     .cookie("access_token", access_token, {
-      maxAge: 900000,
+      maxAge: 3600000,
       httpOnly: false,
     })
     .redirect("http://localhost:3000/");

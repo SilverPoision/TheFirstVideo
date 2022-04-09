@@ -1,11 +1,22 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import Router from "next/router";
 
 import styles from "./navigation.module.css";
-import { useAuth, useSignOut } from "../../contexts/auth";
+import { useAuth, useSignOut, useAuthUpdate } from "../../contexts/auth";
 
 export default function Navigation() {
   const auth = useAuth();
   const signout = useSignOut();
+  const updateAuth = useAuthUpdate();
+
+  useEffect(() => {
+    updateAuth();
+    // if (!auth.auth) {
+    //   Router.push("/");
+    // }
+  });
+
   let nav = null;
   if (auth.auth) {
     nav = (

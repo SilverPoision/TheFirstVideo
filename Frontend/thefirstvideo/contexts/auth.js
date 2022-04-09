@@ -4,16 +4,6 @@ import Cookies from "js-cookie";
 import { removeCookieAndLocalstorage } from "../utils/regular_helpers";
 
 let token, session;
-if (typeof window !== "undefined") {
-  session = Cookies.get("session");
-  token = Cookies.get("access_token");
-  if (session && token) {
-    localStorage.setItem("session", session);
-    localStorage.setItem("access_token", token);
-  }
-  session = localStorage.getItem("session");
-  token = localStorage.getItem("access_token");
-}
 
 const authContext = createContext();
 const authUpdateContext = createContext();
@@ -33,7 +23,14 @@ function AuthProvider({ children }) {
   const [auth, setAuth] = useState({ auth: false });
 
   function verifyAuth() {
-    fetch("http://localhost:1337/authenticate", {
+    if (typeof window !== "undefined") {
+      session = Cookies.get("session");
+      token = Cookies.get("access_token");
+    }
+    if (!session && !token) {
+      return setAuth({ auth: false });
+    }
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/authenticate`, {
       headers: {
         Authorization: session,
         "Access-Token": token,
@@ -42,15 +39,26 @@ function AuthProvider({ children }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setAuth({ ...auth, auth: true, name: data.user.name });
+          if (!auth.auth) {
+            return setAuth({ ...auth, auth: true, name: data.user.name });
+          }
         } else {
-          removeCookieAndLocalstorage(["session", "access_token"]);
+          if (auth.auth) {
+            return setAuth({ auth: false });
+          }
         }
       });
   }
 
   function signout() {
-    fetch("http://localhost:1337/logout", {
+    if (typeof window !== "undefined") {
+      session = Cookies.get("session");
+      token = Cookies.get("access_token");
+    }
+    if (!session && !token) {
+      return setAuth({ auth: false });
+    }
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/logout`, {
       headers: {
         Authorization: session,
         "Access-Token": token,
@@ -61,7 +69,7 @@ function AuthProvider({ children }) {
         if (data.success) {
           setAuth({ auth: false });
           removeCookieAndLocalstorage(["session", "access_token"]);
-          window.location.href = "http://localhost:3000/";
+          window.location.href = `${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT}`;
         }
       });
   }

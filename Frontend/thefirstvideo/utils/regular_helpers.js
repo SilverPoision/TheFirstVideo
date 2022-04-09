@@ -4,7 +4,6 @@ export function removeCookieAndLocalstorage(cookies) {
   if (typeof window !== "undefined") {
     cookies.map((el) => {
       Cookies.remove(el);
-      localStorage.removeItem(el);
     });
   }
 }
@@ -17,21 +16,31 @@ export function getCookies(cookie) {
   return [session, token];
 }
 
-// export function verifyAuth(session, token) {
-//   fetch("http://localhost:1337/authenticate", {
-//     headers: {
-//       Authorization: session,
-//       "Access-Token": token,
-//     },
-//   })
-//     .then((res) => res.json())
-//     .then((data) => {
-//       if (data.success) {
-//         console.log(1, true);
-//         return true;
-//       } else {
-//         removeCookieAndLocalstorage(["session", "access_token"]);
-//         return false;
-//       }
-//     });
-// }
+export async function fetchSubs() {
+  const access = Cookies.get("access_token");
+  const res = await fetch(
+    `https://www.googleapis.com/youtube/v3/subscriptions?mine=true&access_token=${access}&maxResults=50&part=snippet`
+  );
+  const data = await res.json();
+  return data;
+}
+
+export async function verifyAuthPage(session, token) {
+  let res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/authenticate`,
+    {
+      headers: {
+        method: "GET",
+        "Content-Type": "application/json",
+        Authorization: session,
+        "Access-Token": token,
+      },
+    }
+  );
+  const data = await res.json();
+  if (data.success) {
+    return { success: true, user: data.user };
+  } else {
+    return { success: false };
+  }
+}

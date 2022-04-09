@@ -3,9 +3,8 @@ import Router from "next/router";
 
 import { useAuth, useAuthUpdate } from "../../contexts/auth";
 import { getCookies, verifyAuthPage } from "../../utils/regular_helpers";
-import Subscribers from "../../Components/subscribers-list/subscriber";
 
-export default function Subscription(props) {
+export default function Manage(props) {
   const updateAuth = useAuthUpdate();
   const auth = useAuth();
   useEffect(() => {
@@ -14,11 +13,7 @@ export default function Subscription(props) {
       Router.push("/");
     }
   }, []);
-  return (
-    <>
-      <Subscribers />
-    </>
-  );
+  return <></>;
 }
 
 export async function getServerSideProps(ctx) {

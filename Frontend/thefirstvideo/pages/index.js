@@ -1,4 +1,5 @@
 import { getGoogleOAuthURL } from "../utils/getGoogleUri";
+import { getCookies, verifyAuthPage } from "../utils/regular_helpers";
 import Button from "../Components/UI/button";
 import classes from "./index.module.css";
 
@@ -13,31 +14,19 @@ export default function Home() {
 }
 
 export async function getServerSideProps(ctx) {
-  let cookies, session, token;
-  try {
-    cookies = ctx.req.headers.cookie.split(" ");
-    session = cookies[0].split("=")[1];
-    session = session.split(";")[0];
-    token = cookies[1].split("=")[1];
-  } catch {}
+  if (ctx.req.headers.cookie) {
+    const [session, token] = getCookies(ctx.req.headers.cookie);
 
-  let res = await fetch("http://localhost:1337/authenticate", {
-    headers: {
-      method: "GET",
-      "Content-Type": "application/json",
-      Authorization: session,
-      "Access-Token": token,
-    },
-  });
-  const data = await res.json();
+    const authenticate = await verifyAuthPage(session, token);
 
-  if (data.success) {
-    return {
-      redirect: {
-        destination: "/subscription",
-        permanent: false,
-      },
-    };
+    if (authenticate.success) {
+      return {
+        redirect: {
+          destination: "/subscription",
+          permanent: false,
+        },
+      };
+    }
   }
 
   return {
