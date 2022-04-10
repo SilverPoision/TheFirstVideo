@@ -8,8 +8,10 @@ module.exports = catchAsync(async (req, res, next) => {
   const access_token = req.headers["access-token"];
 
   if (
-    (!token && !access_token) ||
-    (token == undefined && access_token == undefined)
+    !token ||
+    !access_token ||
+    token == undefined ||
+    access_token == undefined
   ) {
     return next(new AppError("No token Provided", 400));
   }
