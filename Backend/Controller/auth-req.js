@@ -199,3 +199,24 @@ exports.deletePriority = catchAsync(async (req, res, next) => {
     message: "Deleted Channel",
   });
 });
+
+exports.getPriorites = catchAsync(async (req, res, next) => {
+  const channel = await Channel.find(
+    {
+      user: req.user._id,
+    },
+    { _id: 1, channel_name: 1, channel_priority: 1, channel_id: 1 }
+  );
+  if (!channel) {
+    return res.status(200).json({
+      success: false,
+      error: true,
+      message: "No channels found!",
+    });
+  }
+  return res.status(200).json({
+    success: false,
+    error: true,
+    channel,
+  });
+});

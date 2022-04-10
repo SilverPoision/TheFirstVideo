@@ -8,6 +8,7 @@ const {
   logout,
   setPriority,
   deletePriority,
+  getPriorites,
 } = require("../Controller/auth-req");
 
 router.get("/api/sessions/oauth/google", (req, res, next) =>
@@ -24,6 +25,7 @@ router.get("/authenticate", authController, (req, res, next) => {
   });
 });
 router.get("/logout", authController, logout);
+router.get("/priority", authController, getPriorites);
 
 router.post("/priority", authController, setPriority);
 
