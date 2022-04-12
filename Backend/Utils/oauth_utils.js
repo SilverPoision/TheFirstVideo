@@ -44,14 +44,18 @@ async function tokenVerify(id_token) {
 }
 
 async function accessVerify(access_token) {
-  const req = await axios.get(
-    `https://oauth2.googleapis.com/tokeninfo?access_token=${access_token}`
-  );
+  try {
+    const req = await axios.get(
+      `https://oauth2.googleapis.com/tokeninfo?access_token=${access_token}`
+    );
 
-  if (req.error) {
+    if (req.error) {
+      return { status: false };
+    }
+    return { status: true };
+  } catch (err) {
     return { status: false };
   }
-  return { status: true };
 }
 
 exports.getGoogleOAuthToken = getGoogleOAuthToken;

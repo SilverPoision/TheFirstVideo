@@ -16,16 +16,17 @@ export default function Home() {
 export async function getServerSideProps(ctx) {
   if (ctx.req.headers.cookie) {
     const [session, token] = getCookies(ctx.req.headers.cookie);
+    if (session && token) {
+      const authenticate = await verifyAuthPage(session, token);
 
-    const authenticate = await verifyAuthPage(session, token);
-
-    if (authenticate.success) {
-      return {
-        redirect: {
-          destination: "/subscription",
-          permanent: false,
-        },
-      };
+      if (authenticate.success) {
+        return {
+          redirect: {
+            destination: "/subscription",
+            permanent: false,
+          },
+        };
+      }
     }
   }
 

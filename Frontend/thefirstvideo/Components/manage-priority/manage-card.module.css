@@ -1,0 +1,40 @@
+.container {
+  width: 70%;
+  height: 15vh;
+  background-color: #1A1A1A;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row;
+  align-items: center;
+  margin-top: 4em;
+  border-radius: 10px;
+  padding: 2em;
+}
+
+.name {
+  width: 10em;
+  color: white;
+}
+
+.pri {
+  color: white;
+}
+
+.container input {
+  width: 3em;
+  
+}
+
+.arrow {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 13vh;
+  z-index: 1;
+}
+
+.arrowUp, .arrowDown , .delete  {
+  cursor: pointer;
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+}
+

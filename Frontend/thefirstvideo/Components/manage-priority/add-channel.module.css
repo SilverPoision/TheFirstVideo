@@ -1,0 +1,30 @@
+.container {
+  width: 20%;
+  height: 25vh;
+  background-color: #1A1A1A;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: column;
+  position: absolute;
+  top: 12%;
+  left: 5%;
+}
+
+.container span {
+  font-size: 1.5em;
+  color: #DFDBE6;
+}
+
+.container input {
+  width: 80%;
+}
+
+.button {
+  width: 100%;
+  padding-left: 13vw;
+}
+
+.container button {
+  width: 40%;
+
+}

@@ -1,12 +1,8 @@
 import { getCookies, verifyAuthPage } from "../../utils/regular_helpers";
-import Subscribers from "../../Components/subscribers-list/subscriber";
+import Videos from "../../Components/videos/videos";
 
-export default function Subscription() {
-  return (
-    <>
-      <Subscribers />
-    </>
-  );
+export default function videos() {
+  return <Videos />;
 }
 
 export async function getServerSideProps(ctx) {
@@ -25,6 +21,7 @@ export async function getServerSideProps(ctx) {
       }
     }
   }
+
   return {
     redirect: {
       destination: "/",

@@ -1,0 +1,10 @@
+.heading {
+  color:  hsl(265, 19%, 88%);
+}
+
+.container {
+  width: 50%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}

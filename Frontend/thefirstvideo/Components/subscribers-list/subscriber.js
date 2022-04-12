@@ -19,8 +19,8 @@ export default function Subscribers() {
       {sub.map((el) => {
         return (
           <SubCard
-            key={el.id}
-            id={el.id}
+            key={el.snippet.resourceId.channelId}
+            id={el.snippet.resourceId.channelId}
             name={el.snippet.title}
             image={el.snippet.thumbnails.default.url}
           />

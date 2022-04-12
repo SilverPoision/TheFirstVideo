@@ -9,11 +9,18 @@ export function removeCookieAndLocalstorage(cookies) {
 }
 
 export function getCookies(cookie) {
-  let cookies = cookie.split(" ");
-  let session = cookies[0].split("=")[1];
-  session = session.split(";")[0];
-  let token = cookies[1].split("=")[1];
-  return [session, token];
+  let session, token;
+  try {
+    let cookies = cookie.split(" ");
+    session = cookies[0].split("=")[1];
+    session = session.split(";")[0];
+    token = cookies[1].split("=")[1];
+    return [session, token];
+  } catch (err) {
+    session = undefined;
+    token = undefined;
+    return [session, token];
+  }
 }
 
 export async function fetchSubs() {
@@ -30,7 +37,6 @@ export async function verifyAuthPage(session, token) {
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/authenticate`,
     {
       headers: {
-        method: "GET",
         "Content-Type": "application/json",
         Authorization: session,
         "Access-Token": token,
@@ -43,4 +49,95 @@ export async function verifyAuthPage(session, token) {
   } else {
     return { success: false };
   }
+}
+
+export async function fetchChannels() {
+  const session = Cookies.get("session");
+  const token = Cookies.get("access_token");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: session,
+        "Access-Token": token,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return data;
+}
+
+export async function changePriorities(priority, name, action) {
+  const session = Cookies.get("session");
+  const token = Cookies.get("access_token");
+  if (action == "up") {
+    if (priority <= 1) {
+      priority;
+    } else {
+      priority--;
+    }
+  } else if (action == "down") {
+    priority++;
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: session,
+        "Access-Token": token,
+      },
+      body: JSON.stringify({
+        name,
+        priority,
+      }),
+    }
+  );
+  const data = await res.json();
+
+  return data;
+}
+
+export async function deleteChannel(id) {
+  const session = Cookies.get("session");
+  const token = Cookies.get("access_token");
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: session,
+        "Access-Token": token,
+      },
+      body: JSON.stringify({
+        id,
+      }),
+    }
+  );
+  const data = await res.json();
+
+  return data;
+}
+
+export async function fetchVideos(id_array) {
+  const access = Cookies.get("access_token");
+  let data = [];
+  await Promise.all(
+    id_array.map(async (el) => {
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?mine=true&access_token=${access}&channelid=${el}&part=snippet,id&order=date&maxResults=1`
+      );
+      const singleData = await res.json();
+      console.log(singleData);
+      data.push(singleData.items[0]);
+    })
+  );
+
+  return data;
 }

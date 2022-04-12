@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Router from "next/router";
 
 import styles from "./navigation.module.css";
@@ -12,9 +12,11 @@ export default function Navigation() {
 
   useEffect(() => {
     updateAuth();
-    // if (!auth.auth) {
-    //   Router.push("/");
-    // }
+    if (!auth.auth) {
+      if (Router.asPath != "/") {
+        Router.push("/");
+      }
+    }
   });
 
   let nav = null;

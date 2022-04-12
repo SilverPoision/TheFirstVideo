@@ -4,7 +4,7 @@ const axios = require("axios");
 const { catchAsync, AppError } = require("./Misc/errorHandler");
 const { getGoogleOAuthToken, tokenVerify } = require("../Utils/oauth_utils");
 const { manageChannelPriority } = require("../Utils/regularHandlers");
-const { channelSchema } = require("../Models/validate");
+const { channelSchema, deletePrioritySchema } = require("../Models/validate");
 
 exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   //get the code from the qs
@@ -113,7 +113,7 @@ exports.setPriority = catchAsync(async (req, res, next) => {
       user: req.user._id,
     }).sort({
       channel_priority: 1,
-    });
+    }); //do this with aggregrate funtions in mongodb
 
     await manageChannelPriority(channel1, users_channel, priority, Channel);
 
@@ -167,6 +167,11 @@ exports.setPriority = catchAsync(async (req, res, next) => {
 });
 
 exports.deletePriority = catchAsync(async (req, res, next) => {
+  const { error } = deletePrioritySchema(req.body);
+  if (error) {
+    return next(new AppError(error.details[0].message, 400));
+  }
+
   const id = req.body.id;
   let channel = await Channel.deleteOne({
     _id: id,
@@ -175,8 +180,8 @@ exports.deletePriority = catchAsync(async (req, res, next) => {
 
   if (channel.deletedCount <= 0) {
     return res.status(200).json({
-      status: true,
-      error: false,
+      success: false,
+      error: true,
       message: "No channel found!",
     });
   }
@@ -187,14 +192,21 @@ exports.deletePriority = catchAsync(async (req, res, next) => {
 
   await Channel.deleteMany({ user: req.user._id });
 
+  let index = 0;
+
   channel.map((el, i) => {
     el.channel_priority = i + 1;
+    index = i + 1;
   });
 
-  await Channel.collection.insertMany(channel);
+  if (index > 1) {
+    await Channel.collection.insertMany(channel);
+  } else {
+    await Channel.collection.insertOne({ ...channel[0] });
+  }
 
   return res.status(200).json({
-    status: true,
+    success: true,
     error: false,
     message: "Deleted Channel",
   });
@@ -215,8 +227,8 @@ exports.getPriorites = catchAsync(async (req, res, next) => {
     });
   }
   return res.status(200).json({
-    success: false,
-    error: true,
+    success: true,
+    error: false,
     channel,
   });
 });

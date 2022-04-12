@@ -7,3 +7,10 @@ exports.channelSchema = (data) => {
   });
   return schema.validate(data);
 };
+
+exports.deletePrioritySchema = (data) => {
+  schema = joi.object({
+    id: joi.string().min(6).required(),
+  });
+  return schema.validate(data);
+};

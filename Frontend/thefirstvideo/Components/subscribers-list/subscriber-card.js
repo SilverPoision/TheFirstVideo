@@ -5,7 +5,13 @@ export default function SubCard(props) {
     <div key={props.id} className={classes.card}>
       <img src={props.image} /> {/*/next/image*/}
       <div>
-        <span>{props.name}</span>
+        <a
+          href={`https://www.youtube.com/channel/${props.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>{props.name}</span>
+        </a>
       </div>
     </div>
   );

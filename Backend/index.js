@@ -23,7 +23,7 @@ mongo.connect(
 );
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.CLIENT_URL,
 };
 
 app.use(express.json());
