@@ -39,10 +39,9 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   );
   user.sessToken = filtered;
   user.save();
+  res.header("Location", "https://silverpoision1.vercel.app/");
   return res
-    .header({
-      Location: "https://silverpoision1.vercel.app/",
-    })
+    .status(302)
     .cookie("session", token, {
       maxAge: 43200000,
       httpOnly: false,
