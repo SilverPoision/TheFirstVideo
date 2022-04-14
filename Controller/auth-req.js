@@ -44,12 +44,10 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
     .status(307)
     .cookie("session", token, {
       maxAge: 43200000,
-      httpOnly: false,
       domain: ".vercel.app",
     })
     .cookie("access_token", access_token, {
       maxAge: 43200000,
-      httpOnly: false,
       domain: ".vercel.app",
     })
     .send();
