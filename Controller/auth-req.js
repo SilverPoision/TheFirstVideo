@@ -43,10 +43,12 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
     .cookie("session", token, {
       maxAge: 43200000,
       httpOnly: false,
+      domain: "the-first-video-5971a8o0h-silverpoision.vercel.app",
     })
     .cookie("access_token", access_token, {
       maxAge: 43200000,
       httpOnly: false,
+      domain: "the-first-video-5971a8o0h-silverpoision.vercel.app",
     })
     .redirect("https://the-first-video-5971a8o0h-silverpoision.vercel.app");
 });
