@@ -42,11 +42,9 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   return res
     .cookie("session", token, {
       maxAge: 43200000,
-      domain: "herokuapp.com",
     })
     .cookie("access_token", access_token, {
       maxAge: 43200000,
-      domain: "herokuapp.com",
     })
     .redirect("https://thefirstvideoc.herokuapp.com/");
 });
