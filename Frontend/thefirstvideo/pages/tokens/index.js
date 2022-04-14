@@ -6,8 +6,14 @@ export async function getServerSideProps({ req, res, query }) {
   const cookies = new Cookies(req, res);
   const { session, access_token } = query;
 
-  cookies.set("session", session);
-  cookies.set("access_token", access_token);
+  cookies.set("session", session, {
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60,
+  });
+  cookies.set("access_token", access_token, {
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60,
+  });
 
   return {
     props: {
