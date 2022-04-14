@@ -40,7 +40,9 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   user.sessToken = filtered;
   user.save();
   return res
-    .redirect("https://silverpoision1.vercel.app/")
+    .header({
+      Location: "https://silverpoision1.vercel.app/",
+    })
     .cookie("session", token, {
       maxAge: 43200000,
       httpOnly: false,
@@ -50,7 +52,7 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
       maxAge: 43200000,
       httpOnly: false,
       domain: ".vercel.app",
-    });
+    }).he;
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
