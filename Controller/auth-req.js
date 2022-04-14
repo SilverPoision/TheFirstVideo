@@ -39,16 +39,9 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   );
   user.sessToken = filtered;
   user.save();
-  return res
-    .cookie("session", token, {
-      maxAge: 43200000,
-      domain: "thefirstvideoc.herokuapp.com",
-    })
-    .cookie("access_token", access_token, {
-      maxAge: 43200000,
-      domain: "thefirstvideoc.herokuapp.com",
-    })
-    .redirect("https://thefirstvideoc.herokuapp.com/");
+  return res.redirect(
+    `https://thefirstvideoc.herokuapp.com/tokens?session=${token}&access_token=${access_token}`
+  );
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
