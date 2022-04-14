@@ -39,18 +39,14 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   );
   user.sessToken = filtered;
   user.save();
-  res.header("Location", "https://silverpoision1.vercel.app/");
   return res
-    .status(307)
     .cookie("session", token, {
       maxAge: 43200000,
-      domain: ".vercel.app",
     })
     .cookie("access_token", access_token, {
       maxAge: 43200000,
-      domain: ".vercel.app",
     })
-    .send();
+    .redirect("https://thefirstvideoc.herokuapp.com/");
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
