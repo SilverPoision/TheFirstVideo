@@ -127,15 +127,25 @@ export async function deleteChannel(id) {
 
 export async function fetchVideos(id_array) {
   const access = Cookies.get("access_token");
-  let data = [];
+  let data = {};
+  let uploadId = {};
   await Promise.all(
-    id_array.map(async (el) => {
+    id_array.map(async (el, i) => {
       const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?mine=true&access_token=${access}&channelid=${el}&part=snippet,id&order=date&maxResults=1`
+        `https://www.googleapis.com/youtube/v3/channels?access_token=${access}&id=${el.channel_id}&part=contentDetails`
       );
       const singleData = await res.json();
-      console.log(singleData);
-      data.push(singleData.items[0]);
+      uploadId[i] = singleData.items[0].contentDetails.relatedPlaylists.uploads;
+    })
+  );
+
+  await Promise.all(
+    Object.values(uploadId).map(async (el, i) => {
+      const res = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?access_token=${access}&playlistId=${el}&part=snippet,contentDetails&maxResults=1`
+      );
+      const singleData = await res.json();
+      data[i] = singleData.items[0].snippet;
     })
   );
 

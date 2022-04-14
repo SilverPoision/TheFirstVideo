@@ -199,7 +199,7 @@ exports.deletePriority = catchAsync(async (req, res, next) => {
     index = i + 1;
   });
 
-  if (index > 1) {
+  if (index >= 1) {
     await Channel.collection.insertMany(channel);
   } else {
     await Channel.collection.insertOne({ ...channel[0] });

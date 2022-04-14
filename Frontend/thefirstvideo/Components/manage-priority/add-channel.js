@@ -16,6 +16,8 @@ export default function AddChannel(props) {
             e.preventDefault();
             console.log(nameRef.current.value, priorityRef.current.value);
             props.addChan(nameRef.current.value, priorityRef.current.value);
+            nameRef.current.value = null;
+            priorityRef.current.value = null;
           }}
         >
           Add

@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  width: 70%;
+  padding: 2em 2em 0em 2em;
+  flex-flow: column;
+}
+
+
+
