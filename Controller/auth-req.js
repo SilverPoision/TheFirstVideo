@@ -48,7 +48,7 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
       maxAge: 43200000,
       httpOnly: false,
     })
-    .redirect("http://localhost:3000/");
+    .redirect("https://the-first-video-5971a8o0h-silverpoision.vercel.app");
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
