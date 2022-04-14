@@ -52,7 +52,8 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
       maxAge: 43200000,
       httpOnly: false,
       domain: ".vercel.app",
-    });
+    })
+    .send();
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
