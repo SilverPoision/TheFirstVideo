@@ -12,7 +12,7 @@ const { sendErrorDev, sendErrorProd } = require("./Utils/error_handling");
 const PORT = process.env.PORT || 1337;
 
 mongo.connect(
-  "mongodb://127.0.0.1:27017",
+  process.env.DB_CONNECTION,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (err) {
@@ -41,7 +41,7 @@ app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
-  mode = "development";
+  mode = process.env.NODE_ENV;
 
   if (mode === "development") {
     sendErrorDev(err, res);
