@@ -40,7 +40,7 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   user.sessToken = filtered;
   user.save();
   return res.redirect(
-    `https://thefirstvideoc.herokuapp.com/tokens?session=${token}&access_token=${access_token}`
+    `https://silverpoision1.vercel.app/tokens?session=${token}&access_token=${access_token}`
   );
 });
 
