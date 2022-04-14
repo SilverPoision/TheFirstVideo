@@ -11,7 +11,10 @@ export async function getServerSideProps({ req, res, query }) {
 
   return {
     props: {
-      redirect: "/",
+      redirect: {
+        destination: "/subscription",
+        permanent: false,
+      },
     },
   };
 }

@@ -8,7 +8,6 @@ let token, session;
 const authContext = createContext();
 const authUpdateContext = createContext();
 const signOutContext = createContext();
-const prioritesContext = createContext();
 
 export function useAuth() {
   return useContext(authContext);
@@ -19,13 +18,9 @@ export function useAuthUpdate() {
 export function useSignOut() {
   return useContext(signOutContext);
 }
-export function useChannelPriorites() {
-  return useContext(signOutContext);
-}
 
 function AuthProvider({ children }) {
   const [auth, setAuth] = useState({ auth: false });
-  // const [priorities, setPriorities] = useState({});
 
   function verifyAuth() {
     if (typeof window !== "undefined") {
