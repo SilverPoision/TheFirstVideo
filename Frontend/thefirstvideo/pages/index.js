@@ -1,5 +1,5 @@
 import { getGoogleOAuthURL } from "../utils/getGoogleUri";
-import { getCookies, verifyAuthPage } from "../utils/regular_helpers";
+import { verifyAuthPage } from "../utils/regular_helpers";
 import Button from "../Components/UI/button";
 import classes from "./index.module.css";
 
