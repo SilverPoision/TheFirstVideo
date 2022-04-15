@@ -6,7 +6,7 @@ import Router from "next/router";
 import Head from "next/head";
 import { fetchChannels, fetchVideos } from "../../utils/regular_helpers";
 
-export default function videos(props) {
+export default function Videos(props) {
   const auth = useAuth();
   const updateAuth = useAuthUpdate();
 
