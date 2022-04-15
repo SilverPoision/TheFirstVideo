@@ -22,30 +22,33 @@ export default function Navigation() {
   let nav = null;
   if (auth.auth) {
     nav = (
+      <>
+        <li>
+          <Link href="/subscription">Subscriptions</Link>
+        </li>
+        <li>
+          <Link href="/new-videos">New Videos</Link>
+        </li>
+        <li>
+          <Link href="/manage-priority">Manage Priority</Link>
+        </li>
+        <li>
+          <a onClick={signout}>Logout</a>
+        </li>
+      </>
+    );
+  }
+
+  return (
+    <header className={styles.header}>
       <nav>
         <ul>
           <li>
-            <Link href="/subscription">Subscriptions</Link>
+            <Link href="/">TheFirstVideo</Link>
           </li>
-          <li>
-            <Link href="/new-videos">New Videos</Link>
-          </li>
-          <li>
-            <Link href="/manage-priority">Manage Priority</Link>
-          </li>
-          <li>
-            <a onClick={signout}>Logout</a>
-          </li>
+          {nav}
         </ul>
       </nav>
-    );
-  }
-  return (
-    <header className={styles.header}>
-      <Link href="/">
-        <a>TheFirstVideo</a>
-      </Link>
-      {nav}
     </header>
   );
 }
