@@ -1,9 +1,6 @@
 .container {
   display: flex;
-  width: 70%;
-  padding: 2em 2em 0em 2em;
+  min-width: 80vw;
+  padding: 2em 0em;
   flex-flow: column;
 }
-
-
-

@@ -10,7 +10,7 @@ export default function SubCard(props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>{props.name}</span>
+          {props.name}
         </a>
       </div>
     </div>

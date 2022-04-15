@@ -1,7 +1,7 @@
 import { useContext, createContext, useState } from "react";
 import Cookies from "js-cookie";
 
-import { removeCookieAndLocalstorage } from "../utils/regular_helpers";
+import { removeCookie } from "../utils/regular_helpers";
 
 let token, session;
 
@@ -28,7 +28,14 @@ function AuthProvider({ children }) {
       token = Cookies.get("access_token");
     }
     if (!session && !token) {
-      return setAuth({ auth: false });
+      setAuth({ auth: false });
+      console.log(window.location.href);
+      if (
+        window.location.href != `${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT}/`
+      ) {
+        window.location.href = `${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT}`;
+      }
+      return;
     }
     fetch(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/authenticate`, {
       headers: {
@@ -46,7 +53,11 @@ function AuthProvider({ children }) {
           Cookies.remove("session");
           Cookies.remove("access_token");
           if (auth.auth) {
-            return setAuth({ auth: false });
+            setAuth({ auth: false });
+            if (window.location.href != "/") {
+              window.location.href = `${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT}`;
+            }
+            return;
           }
         }
       });
@@ -70,7 +81,7 @@ function AuthProvider({ children }) {
       .then((data) => {
         if (data.success) {
           setAuth({ auth: false });
-          removeCookieAndLocalstorage(["session", "access_token"]);
+          removeCookie(["session", "access_token"]);
           window.location.href = `${process.env.NEXT_PUBLIC_CLIENT_ENDPOINT}`;
         }
       });

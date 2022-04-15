@@ -5,18 +5,23 @@ import {
   changePriorities,
   deleteChannel,
 } from "../../utils/regular_helpers";
+import { useAuthUpdate } from "../../contexts/auth";
+import AddChannel from "./add-channel";
 
 import { useEffect, useState } from "react";
-import AddChannel from "./add-channel";
 
 export default function Manage() {
   const [channels, setChannels] = useState([]);
+  const updateAuth = useAuthUpdate();
 
   async function priorityHandler(priority, name, action) {
     if (!priority || priority <= 0) {
       return;
     }
     const data = await changePriorities(priority, name, action);
+    if (data == false) {
+      updateAuth();
+    }
     if (data.success) {
       const data = await fetchChannels();
       setChannels(data.channel);
@@ -25,6 +30,9 @@ export default function Manage() {
 
   async function deleteHandler(id) {
     const data = await deleteChannel(id);
+    if (data == false) {
+      updateAuth();
+    }
     if (data.success) {
       const data = await fetchChannels();
       setChannels(data.channel);
@@ -33,6 +41,9 @@ export default function Manage() {
 
   async function addChannelHandler(name, priority) {
     const data = await changePriorities(priority, name);
+    if (data == false) {
+      updateAuth();
+    }
     if (data.success) {
       const data = await fetchChannels();
       setChannels(data.channel);
@@ -42,6 +53,9 @@ export default function Manage() {
   useEffect(() => {
     const fetchCha = async () => {
       const data = await fetchChannels();
+      if (data == false) {
+        updateAuth();
+      }
       setChannels(data.channel);
     };
     fetchCha();

@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-export function removeCookieAndLocalstorage(cookies) {
+export function removeCookie(cookies) {
   if (typeof window !== "undefined") {
     cookies.map((el) => {
       Cookies.remove(el);
@@ -25,6 +25,9 @@ export function getCookies(cookie) {
 
 export async function fetchSubs() {
   const access = Cookies.get("access_token");
+  if (!access) {
+    return false;
+  }
   const res = await fetch(
     `https://www.googleapis.com/youtube/v3/subscriptions?mine=true&access_token=${access}&maxResults=50&part=snippet`
   );
@@ -54,6 +57,9 @@ export async function verifyAuthPage(session, token) {
 export async function fetchChannels() {
   const session = Cookies.get("session");
   const token = Cookies.get("access_token");
+  if (!session || !token) {
+    return false;
+  }
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
     {
@@ -72,6 +78,9 @@ export async function fetchChannels() {
 export async function changePriorities(priority, name, action) {
   const session = Cookies.get("session");
   const token = Cookies.get("access_token");
+  if (!session || !token) {
+    return false;
+  }
   if (action == "up") {
     if (priority <= 1) {
       priority;
@@ -106,6 +115,10 @@ export async function deleteChannel(id) {
   const session = Cookies.get("session");
   const token = Cookies.get("access_token");
 
+  if (!session || !token) {
+    return false;
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
     {
@@ -127,6 +140,9 @@ export async function deleteChannel(id) {
 
 export async function fetchVideos(id_array) {
   const access = Cookies.get("access_token");
+  if (!access) {
+    return false;
+  }
   let data = {};
   let uploadId = {};
   await Promise.all(

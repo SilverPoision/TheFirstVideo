@@ -40,7 +40,7 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   user.sessToken = filtered;
   user.save();
   return res.redirect(
-    `https://silverpoision1.vercel.app/tokens?session=${token}&access_token=${access_token}`
+    `http://localhost:3000/tokens?session=${token}&access_token=${access_token}`
   );
 });
 

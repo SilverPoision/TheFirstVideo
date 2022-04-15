@@ -17,7 +17,7 @@ export default function Navigation() {
         Router.push("/");
       }
     }
-  });
+  }, []);
 
   let nav = null;
   if (auth.auth) {

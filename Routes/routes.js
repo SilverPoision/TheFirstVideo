@@ -15,7 +15,7 @@ router.get("/api/sessions/oauth/google", (req, res, next) =>
   googleOauthHandler(req, res, next)
 );
 router.get("/authenticate", authController, (req, res, next) => {
-  res.json({
+  res.status(200).json({
     success: true,
     user: {
       email: req.user.email,

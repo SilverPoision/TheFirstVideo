@@ -1,31 +1,35 @@
-import { getCookies, verifyAuthPage } from "../../utils/regular_helpers";
 import Manage from "../../Components/manage-priority/manage";
+import { useAuth, useAuthUpdate } from "../../contexts/auth";
+
+import { useEffect } from "react";
+import Router from "next/router";
+import Head from "next/head";
 
 export default function ManagePriority() {
-  return <Manage />;
-}
+  const auth = useAuth();
+  const updateAuth = useAuthUpdate();
 
-export async function getServerSideProps(ctx) {
-  if (ctx.req.headers.cookie) {
-    const [session, token] = getCookies(ctx.req.headers.cookie);
-    if (session && token) {
-      const authenticate = await verifyAuthPage(session, token);
-
-      if (authenticate.success) {
-        return {
-          props: {
-            auth: true,
-            name: authenticate.user.name,
-          },
-        };
+  useEffect(() => {
+    updateAuth();
+    if (!auth.auth) {
+      if (Router.asPath != "/") {
+        Router.push("/");
       }
     }
-  }
+  }, []);
 
-  return {
-    redirect: {
-      destination: "/",
-      permanent: false,
-    },
-  };
+  let manage = null;
+
+  if (auth.auth) {
+    manage = <Manage />;
+  }
+  return (
+    <>
+      <Head>
+        <title>Manage Priority</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      {manage}
+    </>
+  );
 }

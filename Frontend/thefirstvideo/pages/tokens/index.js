@@ -8,11 +8,11 @@ export async function getServerSideProps({ req, res, query }) {
 
   cookies.set("session", session, {
     httpOnly: false,
-    maxAge: 1000 * 60 * 60,
+    maxAge: 86400000,
   });
   cookies.set("access_token", access_token, {
     httpOnly: false,
-    maxAge: 1000 * 60 * 60,
+    maxAge: 86400000,
   });
 
   return {
