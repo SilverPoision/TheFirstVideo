@@ -10,9 +10,13 @@ import AddChannel from "./add-channel";
 
 import { useEffect, useState } from "react";
 
-export default function Manage() {
-  const [channels, setChannels] = useState([]);
+export default function Manage(props) {
+  const [channels, setChannels] = useState();
   const updateAuth = useAuthUpdate();
+
+  useEffect(() => {
+    setChannels(props.channels.channel);
+  }, []);
 
   async function priorityHandler(priority, name, action) {
     if (!priority || priority <= 0) {
@@ -50,33 +54,28 @@ export default function Manage() {
     }
   }
 
-  useEffect(() => {
-    const fetchCha = async () => {
-      const data = await fetchChannels();
-      if (data == false) {
-        updateAuth();
-      }
-      setChannels(data.channel);
-    };
-    fetchCha();
-  }, []);
+  let data = null;
+
+  if (channels) {
+    data = channels.map((el) => {
+      return (
+        <ManageCard
+          key={el._id}
+          priority={el.channel_priority}
+          id={el._id}
+          name={el.channel_name}
+          priorityHandler={priorityHandler}
+          deleteChannel={deleteHandler}
+        />
+      );
+    });
+  }
 
   return (
     <div className={classes.container}>
       <h2 className={classes.heading}>You Channels and Priorities</h2>
       <AddChannel addChan={addChannelHandler} />
-      {channels.map((el) => {
-        return (
-          <ManageCard
-            key={el._id}
-            priority={el.channel_priority}
-            id={el._id}
-            name={el.channel_name}
-            priorityHandler={priorityHandler}
-            deleteChannel={deleteHandler}
-          />
-        );
-      })}
+      {data}
     </div>
   );
 }

@@ -4,8 +4,9 @@ import Subscribers from "../../Components/subscribers-list/subscriber";
 import { useEffect } from "react";
 import Router from "next/router";
 import Head from "next/head";
+import { fetchSubs } from "../../utils/regular_helpers";
 
-export default function Subscription() {
+export default function Subscription(props) {
   const auth = useAuth();
   const updateAuth = useAuthUpdate();
 
@@ -21,7 +22,7 @@ export default function Subscription() {
   let sub = null;
 
   if (auth.auth) {
-    sub = <Subscribers />;
+    sub = <Subscribers data={props.data} />;
   }
   return (
     <>
@@ -32,4 +33,18 @@ export default function Subscription() {
       {sub}
     </>
   );
+}
+
+export async function getServerSideProps({ req, res }) {
+  const access = req.cookies["access_token"];
+  const subs = await fetchSubs(access);
+  if (subs == false) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return { props: { data: subs } };
 }

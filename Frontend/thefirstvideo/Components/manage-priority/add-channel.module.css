@@ -1,15 +1,14 @@
 .container {
-  width: 15%;
-  height: 25vh;
+  width: 32vw;
+  height: 27vh;
   background-color: #1a1a1a;
   display: flex;
   justify-content: space-around;
   flex-flow: column;
-  position: absolute;
   top: 12%;
   left: 5%;
   border-radius: 10px;
-  padding: 1.5em;
+  padding: 20px 40px;
 }
 
 .container span {
@@ -18,7 +17,7 @@
 }
 
 .container input {
-  width: 90%;
+  width: 25vw;
   height: 2.5em;
   padding: 0.8em;
   border-radius: 5px;
@@ -26,10 +25,7 @@
   border: none;
   background-color: #121212;
   color: hsl(265, 19%, 88%);
-}
-
-.container input:nth-child(1) {
-  margin-top: 1em;
+  margin-top: 10px;
 }
 
 .container input::placeholder {
@@ -47,8 +43,23 @@
   border-radius: 5px;
   outline: none;
   border: none;
-  margin-left: 11em;
+  /* margin-left: 11em; */
   margin-top: 0.7em;
   background-color: #121212;
   color: hsl(265, 19%, 88%);
+}
+
+@media (max-width: 750px) {
+  .container {
+    width: 60vw;
+    padding: 20px 30px;
+  }
+
+  .container span {
+    font-size: 1em;
+  }
+
+  .container input {
+    width: 40vw;
+  }
 }

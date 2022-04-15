@@ -8,23 +8,23 @@ export function removeCookie(cookies) {
   }
 }
 
-export function getCookies(cookie) {
-  let session, token;
-  try {
-    let cookies = cookie.split(" ");
-    session = cookies[0].split("=")[1];
-    session = session.split(";")[0];
-    token = cookies[1].split("=")[1];
-    return [session, token];
-  } catch (err) {
-    session = undefined;
-    token = undefined;
-    return [session, token];
-  }
-}
+// export function getCookies(cookie) {
+//   let session, token;
+//   try {
+//     let cookies = cookie.split(" ");
+//     session = cookies[0].split("=")[1];
+//     session = session.split(";")[0];
+//     token = cookies[1].split("=")[1];
+//     return [session, token];
+//   } catch (err) {
+//     session = undefined;
+//     token = undefined;
+//     return [session, token];
+//   }
+// }
 
-export async function fetchSubs() {
-  const access = Cookies.get("access_token");
+export async function fetchSubs(access) {
+  // const access = Cookies.get("access_token");
   if (!access) {
     return false;
   }
@@ -54,11 +54,10 @@ export async function verifyAuthPage(session, token) {
   }
 }
 
-export async function fetchChannels() {
-  const session = Cookies.get("session");
-  const token = Cookies.get("access_token");
-  if (!session || !token) {
-    return false;
+export async function fetchChannels(session, access) {
+  if (!session || !access) {
+    session = Cookies.get("session");
+    access = Cookies.get("access_token");
   }
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/priority`,
@@ -66,7 +65,7 @@ export async function fetchChannels() {
       headers: {
         "Content-Type": "application/json",
         Authorization: session,
-        "Access-Token": token,
+        "Access-Token": access,
       },
     }
   );
@@ -138,11 +137,7 @@ export async function deleteChannel(id) {
   return data;
 }
 
-export async function fetchVideos(id_array) {
-  const access = Cookies.get("access_token");
-  if (!access) {
-    return false;
-  }
+export async function fetchVideos(id_array, access) {
   let data = {};
   let uploadId = {};
   await Promise.all(

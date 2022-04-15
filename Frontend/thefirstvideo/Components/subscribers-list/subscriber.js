@@ -5,23 +5,26 @@ import { useAuthUpdate } from "../../contexts/auth";
 
 import { useState, useEffect } from "react";
 
-export default function Subscribers() {
-  const [sub, setSub] = useState([]);
-  const updateAuth = useAuthUpdate();
-  useEffect(() => {
-    const fetch = async () => {
-      const subs = await fetchSubs();
-      if (subs == false) {
-        updateAuth();
-      }
-      setSub([...subs.items]);
-    };
-    fetch();
-  }, []);
+export default function Subscribers(props) {
+  // const [sub, setSub] = useState([]);
+  // const updateAuth = useAuthUpdate();
+  // if (props.data) {
+  //   setSub([...props.data.items]);
+  // }
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const subs = await fetchSubs();
+  //     if (subs == false) {
+  //       updateAuth();
+  //     }
+  //     setSub([...subs.items]);
+  //   };
+  //   fetch();
+  // }, []);
   return (
     <div className={classes.container}>
       <h2>Your top 50 Subscriptions</h2>
-      {sub.map((el) => {
+      {props.data.items.map((el) => {
         return (
           <SubCard
             key={el.snippet.resourceId.channelId}
