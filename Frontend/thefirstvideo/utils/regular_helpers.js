@@ -20,6 +20,9 @@ export async function fetchSubs(access) {
 }
 
 export async function verifyAuthPage(session, token) {
+  if (!session || !token) {
+    return { success: false };
+  }
   let res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/authenticate`,
     {
@@ -122,6 +125,9 @@ export async function deleteChannel(id) {
 }
 
 export async function fetchVideos(id_array, access) {
+  if (!access) {
+    return false;
+  }
   let data = {};
   let uploadId = {};
   await Promise.all(
