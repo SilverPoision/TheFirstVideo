@@ -1,6 +1,6 @@
 .container {
   width: 32vw;
-  height: 27vh;
+  height: 220px;
   background-color: #1a1a1a;
   display: flex;
   justify-content: space-around;
@@ -37,7 +37,7 @@
 }
 
 .container button {
-  width: 40%;
+  width: 60px;
   height: 2.5em;
   font-size: 0.8em;
   border-radius: 5px;

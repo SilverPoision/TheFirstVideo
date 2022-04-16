@@ -45,7 +45,7 @@ app.use((err, req, res, next) => {
 
   if (mode === "development") {
     sendErrorDev(err, res);
-  } else if (mode === "production") {
+  } else {
     sendErrorProd(err, res);
   }
 });

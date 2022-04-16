@@ -39,9 +39,15 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   );
   user.sessToken = filtered;
   user.save();
-  return res.redirect(
-    `https://silverpoision1.vercel.app/tokens?session=${token}&access_token=${access_token}`
-  );
+  if (process.env.NODE_ENV == "production") {
+    return res.redirect(
+      `${process.env.CLIENT_URL}/tokens?session=${token}&access_token=${access_token}`
+    );
+  } else {
+    return res.redirect(
+      `http://localhost:3000/tokens?session=${token}&access_token=${access_token}`
+    );
+  }
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
