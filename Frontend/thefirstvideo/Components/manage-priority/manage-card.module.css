@@ -36,8 +36,7 @@
 .arrowDown,
 .delete {
   cursor: pointer;
-  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg)
-    brightness(118%) contrast(119%);
+  filter: brightness(0) invert(1);
 }
 
 @media (max-width: 750px) {
