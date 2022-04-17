@@ -29,6 +29,7 @@ var corsOptions = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("tiny"));
+app.use(express.static("public"));
 app.use(cors(corsOptions));
 
 app.use(routes);
