@@ -217,7 +217,10 @@ exports.getPriorites = catchAsync(async (req, res, next) => {
       user: req.user._id,
     },
     { _id: 1, channel_name: 1, channel_priority: 1, channel_id: 1 }
-  );
+  ).sort({
+    channel_priority: 1,
+  });
+
   if (!channel) {
     return res.status(200).json({
       success: false,
