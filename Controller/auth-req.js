@@ -44,6 +44,13 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
       `${process.env.CLIENT_URL}/tokens?session=${token}&access_token=${access_token}`
     );
   } else {
+    /* I know this is a security issue and I should not send the token naked 
+      via GET request in query params but I think I don't have any options to
+      do so because I then have to host the backend and frontend on the same 
+      domain to share the cookies between them and Heroku doesn't allow custom
+      domains until you purchase premium so after getting from all the workarounds
+      I have to finalise this approach. Let me know if anyone can sort this out 
+      I will be glad to fix it. */
     return res.redirect(
       `http://localhost:3000/tokens?session=${token}&access_token=${access_token}`
     );
