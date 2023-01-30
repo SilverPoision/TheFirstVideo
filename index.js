@@ -11,16 +11,29 @@ const routes = require("./Routes/routes");
 const { sendErrorDev, sendErrorProd } = require("./Utils/error_handling");
 const PORT = process.env.PORT || 1337;
 
-mongo.connect(
-  process.env.DB_CONNECTION,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  (err) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log("Connected to DB");
+// mongo.connect(
+//   process.env.DB_CONNECTION,
+//   { useNewUrlParser: true, useUnifiedTopology: true },
+//   (err) => {
+//     if (err) {
+//       console.log(err);
+//     }
+//     console.log("Connected to DB");
+//   }
+// );
+
+const connectDB = async () => {
+  try {
+    const conn = await mongo.connect(process.env.DB_CONNECTION, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
   }
-);
+};
 
 var corsOptions = {
   origin: process.env.CLIENT_URL,
@@ -50,7 +63,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(PORT, (err) => {
+connectDB().then((err) => {
   if (err) {
     console.log(err);
   }
