@@ -63,9 +63,13 @@ app.use((err, req, res, next) => {
   }
 });
 
-connectDB().then((err) => {
+client.connect((err) => {
   if (err) {
-    console.log(err);
+    console.error(err);
+    return false;
   }
-  console.log(`Server running on port ${PORT}`);
+  // connection to mongo is successful, listen for requests
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });

@@ -10,7 +10,7 @@ exports.googleOauthHandler = catchAsync(async (req, res, next) => {
   //get the code from the qs
   const code = req.query.code;
 
-  //get the id and access to  ken wit tthe ocde
+  //get the id and access to  ken with the code
   let { id_token, access_token } = await getGoogleOAuthToken(code);
   // console.log({ id_token, access_token });
   let { googleUser } = await tokenVerify(id_token);
