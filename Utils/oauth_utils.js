@@ -6,7 +6,7 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 async function getGoogleOAuthToken(code) {
-  const url = "https://oauth2.googleapis.com/token";
+  const url = "https://accounts.google.com/o/oauth2/token";
 
   const values = {
     code,
